@@ -1,4 +1,4 @@
-output/hex.pbm
+output/oct.pbm
 800
-6
+8
 100

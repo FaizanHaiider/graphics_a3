@@ -86,10 +86,10 @@ def createTriangleMesh(polygon, imgSize, triMesh):
     center = vertex(int(imgSize/2), int(imgSize/2), 0)
 
     # triangle mesh for front/rear surfaces
-    if(polygon.getNumSides() >= 4):
-        vertices = [0] * 3
+    if(polygon.getNumSides() > 4):
         frontSurface = polygon.getSurface(0)
         for i in range(frontSurface.getVerticesLen()-1):
+            vertices = [0] * 3
             v = frontSurface.getVertex(i)
             vv = frontSurface.getVertex(i+1)
             vertices[0], vertices[1], vertices[2] = v, vv, center
@@ -110,15 +110,13 @@ def rasterize(Matrix, poly, imgSize):
             vv = surface.getVertex(ii)
             BresenhamAlgo(v, vv, imgSize, Matrix)
         # triangle mesh rasterize
-        # for triangle in surface.getTriangles():
-        #     v = triangle.getVertex(0)
-        #     vv = triangle.getVertex(1)
-        #     vvv = triangle.getVertex(2)
-        #     v.printVertex()
-        #     vv.printVertex()
-        #     vvv.printVertex()
-        #     BresenhamAlgo(v, vv, imgSize, Matrix)
-        #     BresenhamAlgo(vv, vvv, imgSize, Matrix)
+        for triangle in surface.getTriangles():
+            v = triangle.getVertex(0)
+            vv = triangle.getVertex(1)
+            vvv = triangle.getVertex(2)
+            BresenhamAlgo(v, vv, imgSize, Matrix)
+            BresenhamAlgo(vv, vvv, imgSize, Matrix)
+            BresenhamAlgo(v, vvv, imgSize, Matrix)
 # end rasterize
 
 # Bresenhams's Algo
