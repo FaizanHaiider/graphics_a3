@@ -1,4 +1,4 @@
-output/square.pbm
+output/hex.pbm
 800
-4
+6
 100

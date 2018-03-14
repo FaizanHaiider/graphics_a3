@@ -110,12 +110,15 @@ def rasterize(Matrix, poly, imgSize):
             vv = surface.getVertex(ii)
             BresenhamAlgo(v, vv, imgSize, Matrix)
         # triangle mesh rasterize
-        for triangle in surface.getTriangles():
-            v = triangle.getVertex(0)
-            vv = triangle.getVertex(1)
-            vvv = triangle.getVertex(2)
-            BresenhamAlgo(v, vv, imgSize, Matrix)
-            BresenhamAlgo(vv, vvv, imgSize, Matrix)
+        # for triangle in surface.getTriangles():
+        #     v = triangle.getVertex(0)
+        #     vv = triangle.getVertex(1)
+        #     vvv = triangle.getVertex(2)
+        #     v.printVertex()
+        #     vv.printVertex()
+        #     vvv.printVertex()
+        #     BresenhamAlgo(v, vv, imgSize, Matrix)
+        #     BresenhamAlgo(vv, vvv, imgSize, Matrix)
 # end rasterize
 
 # Bresenhams's Algo
