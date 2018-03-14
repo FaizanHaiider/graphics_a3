@@ -128,7 +128,7 @@ def BresenhamAlgo(v, vv, imgSize, Matrix):
 
     dx = xe - xs
     dy = ye - ys
-    isSteep = abs(dy) - abs(dx)
+    isSteep = abs(dy) > abs(dx)
 
     if(isSteep):
         xs, ys = ys, xs

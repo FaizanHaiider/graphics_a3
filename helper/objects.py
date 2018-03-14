@@ -67,4 +67,3 @@ class vertex:
         return self.z
     def printVertex(self):
         print '({}, {}, {})'.format(self.x, self.y, self.z)
-    
