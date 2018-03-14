@@ -19,6 +19,9 @@ def main():
         # create polygon surfaces
         createPolygonSurfaces(newPolygon, imgSize)
 
+        # create triangle mesh
+        createTriangleMesh(newPolygon, imgSize, triMesh)
+
         # update Matrix
         rasterize(Matrix, newPolygon, imgSize)
 

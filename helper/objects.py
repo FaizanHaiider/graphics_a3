@@ -23,6 +23,8 @@ class surface:
     def __init__(self, vertices, numVertices):
         self.vertices = vertices
         self.numVertices = numVertices
+        self.triIndex = 0
+        self.triangles = []
     
     def getVertices(self):
         return self.vertices
@@ -30,6 +32,25 @@ class surface:
         return self.numVertices
     def getVertex(self, index):
         return self.vertices[index]
+    def getTriangles(self):
+        return self.triangles
+    def addTriangle(self, triangle):
+        self.triangles.append(triangle)
+        self.triIndex = self.triIndex + 1
+
+# triangle class
+class triangle:
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.numVertices = 3
+    
+    def getVertices(self):
+        return self.getVertices
+    def getVertex(self, index):
+        return self.vertices[index]
+    def numVerticesLen(self):
+        return self.numVertices
+
 
 # vertex/vector class
 class vertex:

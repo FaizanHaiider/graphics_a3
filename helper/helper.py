@@ -80,52 +80,81 @@ def createInterSurfaces(newPolygon):
         newPolygon.addSurface(surface(vertices, 4))
 # end createInterSurfaces 
 
-# Bresenhams's Algo
+# create triangle mesh
+def createTriangleMesh(polygon, imgSize, triMesh):
+    # calc center of polygon
+    center = vertex(int(imgSize/2), int(imgSize/2), 0)
+
+    # triangle mesh for front/rear surfaces
+    if(polygon.getNumSides() >= 4):
+        vertices = [0] * 3
+        frontSurface = polygon.getSurface(0)
+        for i in range(frontSurface.getVerticesLen()-1):
+            v = frontSurface.getVertex(i)
+            vv = frontSurface.getVertex(i+1)
+            vertices[0], vertices[1], vertices[2] = v, vv, center
+            ntriangle = triangle(vertices)
+            frontSurface.addTriangle(ntriangle)
+
+# rasterize polygon
 def rasterize(Matrix, poly, imgSize):
+    #
     for surface in poly.getSurfaceArr():
         verticesLen = surface.getVerticesLen()
+        # regular edges
         for i in range(verticesLen):
             ii = i + 1
             if(ii == verticesLen):
                 ii = 0
             v = surface.getVertex(i)
             vv = surface.getVertex(ii)
+            BresenhamAlgo(v, vv, imgSize, Matrix)
+        # triangle mesh rasterize
+        for triangle in surface.getTriangles():
+            v = triangle.getVertex(0)
+            vv = triangle.getVertex(1)
+            vvv = triangle.getVertex(2)
+            BresenhamAlgo(v, vv, imgSize, Matrix)
+            BresenhamAlgo(vv, vvv, imgSize, Matrix)
+# end rasterize
 
-            xs, ys = int(v.getx()), int(v.gety())
-            xe, ye = int(vv.getx()), int(vv.gety())
+# Bresenhams's Algo
+def BresenhamAlgo(v, vv, imgSize, Matrix):
+    xs, ys = int(v.getx()), int(v.gety())
+    xe, ye = int(vv.getx()), int(vv.gety())
 
-            dx = xe - xs
-            dy = ye - ys
-            isSteep = abs(dy) - abs(dx)
+    dx = xe - xs
+    dy = ye - ys
+    isSteep = abs(dy) - abs(dx)
 
-            if(isSteep):
-                xs, ys = ys, xs
-                xe, ye = ye, xe
-            swapped = 0
-            if(xs > xe):
-                xs, xe = xe, xs
-                ys, ye = ye, ys
-                swapped = 1
-            
-            dx = xe - xs
-            dy = ye - ys
-            error = int(dx/2.0)
-            yincr = 1 if(ys < ye) else -1
+    if(isSteep):
+        xs, ys = ys, xs
+        xe, ye = ye, xe
+    swapped = 0
+    if(xs > xe):
+        xs, xe = xe, xs
+        ys, ye = ye, ys
+        swapped = 1
+    
+    dx = xe - xs
+    dy = ye - ys
+    error = int(dx/2.0)
+    yincr = 1 if(ys < ye) else -1
 
-            y = ys
-            points = []
-            for x in range(xs, xe + 1):
-                tx = (y if isSteep else x)
-                ty = (x if isSteep else y)
-                tx = (tx if tx < imgSize else tx-1)
-                ty = (ty if ty < imgSize else ty-1)
-                coord = (tx, ty)
-                points.append(coord)
-                error  = error - abs(dy)
-                if(error < 0):
-                    y = y + yincr
-                    error = error + dx
-            updateMatrix(Matrix, points, swapped)    
+    y = ys
+    points = []
+    for x in range(xs, xe + 1):
+        tx = (y if isSteep else x)
+        ty = (x if isSteep else y)
+        tx = (tx if tx < imgSize else tx-1)
+        ty = (ty if ty < imgSize else ty-1)
+        coord = (tx, ty)
+        points.append(coord)
+        error  = error - abs(dy)
+        if(error < 0):
+            y = y + yincr
+            error = error + dx
+    updateMatrix(Matrix, points, swapped)    
 # end rasterize
 
 # update Matrix after rasterize()
