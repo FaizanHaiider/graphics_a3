@@ -51,7 +51,7 @@ def createPolygonSurfaces(newPolygon, imgSize):
     newPolygon.addSurface(surface(surfaceVertices, numSides))
 
     # create intermediate surfaces
-    # createInterSurfaces(newPolygon)
+    createInterSurfaces(newPolygon)
 # end createPolygonSurfaces
 
 # calculate surface vertices
@@ -82,7 +82,7 @@ def createInterSurfaces(newPolygon):
 
 # Bresenhams's Algo
 def rasterize(Matrix, poly, imgSize):
-    for surface in ploy.getSurfaceArr():
+    for surface in poly.getSurfaceArr():
         verticesLen = surface.getVerticesLen()
         for i in range(verticesLen):
             ii = i + 1
@@ -91,8 +91,8 @@ def rasterize(Matrix, poly, imgSize):
             v = surface.getVertex(i)
             vv = surface.getVertex(ii)
 
-            xs, ys = v.getx(), v.gety()
-            xe, ye = vv.getx(), vv.gety()
+            xs, ys = int(v.getx()), int(v.gety())
+            xe, ye = int(vv.getx()), int(vv.gety())
 
             dx = xe - xs
             dy = ye - ys
@@ -115,31 +115,45 @@ def rasterize(Matrix, poly, imgSize):
             y = ys
             points = []
             for x in range(xs, xe + 1):
-                coord = (y, x) if isSteep else (x, y)
+                tx = (y if isSteep else x)
+                ty = (x if isSteep else y)
+                tx = (tx if tx < imgSize else tx-1)
+                ty = (ty if ty < imgSize else ty-1)
+                coord = (tx, ty)
                 points.append(coord)
                 error  = error - abs(dy)
                 if(error < 0):
-                    y = y + ystep
+                    y = y + yincr
                     error = error + dx
-            updateMatrix(points, swapped)    
+            updateMatrix(Matrix, points, swapped)    
 # end rasterize
 
 # update Matrix after rasterize()
-def updateMatrix(points, swapped):
+def updateMatrix(Matrix, points, swapped):
     if(swapped):
         points.reverse()
     for point in points:
-        Matrix[point[0], point[1]] = 1
+        Matrix[point[0]][point[1]] = 1
 # end updateMatrix
 
 # write Matrix to ppm file
 def writePPM(Matrix, filename, imgSize):
     # create output file
     with open(filename, "w+") as fp:
-        fp.write("P1")
-        fp.write('{} {}'.format(imgSize, imgSize))
         for i in Matrix:
             fp.write(' '.join(map(str, i)))
+
+    # read, format, write file data
+    with open(filename, "r+") as fp:
+        lines = fp.read()
+    lines = lines.replace("00", "0 0")
+    lines = lines.replace("01", "0 1")
+    lines = lines.replace("10", "1 0")
+    lines = lines.replace("11", "1 1")
+    with open(filename, "w+") as fp:
+        fp.write("P1\n")
+        fp.write('{} {}\n'.format(imgSize, imgSize))
+        fp.write(lines)
 # end writePPM
 
 # calculate cross product two vectors
@@ -151,7 +165,7 @@ def calcCrossProduct(vOne, vTwo):
 	return newVertex
 # end calcCrossProd
 
-# create vector
+# create vector using two vertices
 def createVector(vOne, vTwo):
     x = vTwo.getx() - vOne.getx()
     y = vTwo.gety() - vOne.gety()

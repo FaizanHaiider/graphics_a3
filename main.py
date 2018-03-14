@@ -7,7 +7,7 @@ from math import *
 def main():
     origin = vertex(0,0,0)
     filename, imgSize, numShapes, shapeArr, triMesh = readFileData("input.txt")
-    Matrix = [[0 for x in range(imgSize+1)] for y in range(imgSize+1)]
+    Matrix = [[0 for x in range(imgSize)] for y in range(imgSize)]
     
     for i in range(numShapes):
 
@@ -20,7 +20,7 @@ def main():
         createPolygonSurfaces(newPolygon, imgSize)
 
         # update Matrix
-        updateMatrix(Matrix, newPolygon, imgSize)
+        rasterize(Matrix, newPolygon, imgSize)
 
     # write to ppm file
     writePPM(Matrix, filename, imgSize)

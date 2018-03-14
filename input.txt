@@ -1,4 +1,4 @@
-output.pbm
-400
+output/square.pbm
+800
 4
 100
