@@ -219,6 +219,76 @@ def createVector(vOne, vTwo):
     return vertex(x,y,z)
 # end createVector
 
+# find norm of vertex
+def calcNorm(v):
+    return sqrt(calcInnerProd(v))
+# end calcNorm 
+
+# scalar multiplication
+def scalarMult(const, v):
+    nv = vertex(v.getx() * const, v.gety() * const, v.getz() * const)
+    return nv
+# end scalarMult
+
+# normalize unit vector
+def normalize(v):
+    # find norm
+    norm = calcNorm(v)
+    # constant
+    const = (1/norm)
+    # normalize
+    return scalarMult(const, v)
+# end normalize
+
+# calc inner product
+def calcInnerProd(v, vv):
+    x = v.getx() + vv.getx()
+    y = v.gety() + vv.gety()
+    z = v.getz() + vv.getz()
+    return x+y+z
+# end calcInnerProd
+
+# subtract two vectors
+def subtrVector(v, vv):
+    nvv = vertex(vv.getx() * (-1), vv.gety() * (-1), vv.getz() * (-1))
+    fv = vertex(v.getx() + nvv.getx(), v.gety() + nvv.gety(), v.getz() + nvv.getz())
+    return fv
+# end subtrVector
+
 # square function
 def square(num):
     return num**2
+# end square
+
+# create viewPoint
+def createViewPoint(sphCoords, origin, basis):
+    # required variables
+    r = sphCoords[0]
+    elvation = radians(sphCoords[1])
+    azi = radians(sphCoords[2])
+
+    # calc C
+    # calc x = r * cos(azi) * cos(elvation)
+    x = r * cos(azi) * cos(elvation)
+    # calc y = r * cos(azi)*sin(elvation)
+    y = r * cos(azi) * sin(elvation)
+    # calc z = r * sin(azi)
+    z = r * sin(azi)
+    c = vertex(x,y,z)
+
+    # calc N
+    n = createVector(origin, c)
+    n = normalize(n)
+
+    # calc V
+    k = basis.getk()
+    kn = calcInnerProd(k, n)
+    vPrime = subtrVector(k, scalarMult(kn, n))
+    v = normalize(vPrime)
+
+    # calc U
+    u = calcCrossProduct(n, v)
+
+    viewpoint = viewPoint(c,u,v,n)
+    return viewpoint
+# end createViewPoint

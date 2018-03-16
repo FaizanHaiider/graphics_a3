@@ -10,9 +10,11 @@ def main():
 
     # init variables
     Matrix = [[0 for x in range(imgSize)] for y in range(imgSize)]
-    basis = basis(vertex(imgSize,0,0), vertex(0,imgSize,0), vertex(0,0,imgSize))
+    basis = Basis(vertex(imgSize,0,0), vertex(0,imgSize,0), vertex(0,0,imgSize))
     originCoord = int(imgSize/2)
     origin = vertex(originCoord,originCoord,originCoord)
+    viewpoint = createViewPoint(sphCoords, origin, basis)
+    viewpoint.printViewPoint()
 
     # create shape(s)
     for i in range(numShapes):

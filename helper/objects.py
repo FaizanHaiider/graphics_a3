@@ -70,17 +70,17 @@ class vertex:
         print '({}, {}, {})'.format(self.x, self.y, self.z)
 
 # basis class
-class basis:
+class Basis:
     def __init__(self, i, j, k):
         self.i = i
         self.j = j
         self.k = k
     
-    def geti():
+    def geti(self):
         return self.i
-    def getj():
+    def getj(self):
         return self.j
-    def getk():
+    def getk(self):
         return self.k
 
 # view point class
@@ -91,11 +91,16 @@ class viewPoint:
         self.v = v
         self.n = n
     
-    def getc():
+    def getc(self):
         return self.c
-    def getu():
+    def getu(self):
         return self.u
-    def getv():
+    def getv(self):
         return self.v
-    def getn():
+    def getn(self):
         return self.n
+    def printViewPoint(self):
+        self.c.printVertex()
+        self.u.printVertex()
+        self.n.printVertex()
+        self.v.printVertex()
