@@ -5,10 +5,16 @@ from helper.objects import *
 from math import *
 
 def main():
-    origin = vertex(0,0,0)
-    filename, imgSize, numShapes, shapeArr, triMesh = readFileData("input.txt")
+    # read input file
+    filename, imgSize, numShapes, shapeArr, triMesh, sphCoords = readFileData("input.txt")
+
+    # init variables
     Matrix = [[0 for x in range(imgSize)] for y in range(imgSize)]
-    
+    basis = basis(vertex(imgSize,0,0), vertex(0,imgSize,0), vertex(0,0,imgSize))
+    originCoord = int(imgSize/2)
+    origin = vertex(originCoord,originCoord,originCoord)
+
+    # create shape(s)
     for i in range(numShapes):
 
         # create new polygon 

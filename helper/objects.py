@@ -53,7 +53,6 @@ class triangle:
     def numVerticesLen(self):
         return self.numVertices
 
-
 # vertex/vector class
 class vertex:
     def __init__(self, x, y, z):
@@ -69,3 +68,34 @@ class vertex:
         return self.z
     def printVertex(self):
         print '({}, {}, {})'.format(self.x, self.y, self.z)
+
+# basis class
+class basis:
+    def __init__(self, i, j, k):
+        self.i = i
+        self.j = j
+        self.k = k
+    
+    def geti():
+        return self.i
+    def getj():
+        return self.j
+    def getk():
+        return self.k
+
+# view point class
+class viewPoint:
+    def __init__(self, c, u, v, n):
+        self.c = c
+        self.u = u
+        self.v = v
+        self.n = n
+    
+    def getc():
+        return self.c
+    def getu():
+        return self.u
+    def getv():
+        return self.v
+    def getn():
+        return self.n

@@ -15,7 +15,9 @@ def readFileData(filename):
     imgSize = int(input_data[1])
     numShapes, shapeArr = getShapeInfo(input_data[2].strip("\r\n"))
     triMesh = int(input_data[3].strip("\r\n"))
-    return filename, imgSize, numShapes, shapeArr, triMesh
+    sphCoords = input_data[4].strip("\r\n").split(",")
+    sphCoords[0], sphCoords[1], sphCoords[2] = int(sphCoords[0]), int(sphCoords[1]), int(sphCoords[2])
+    return filename, imgSize, numShapes, shapeArr, triMesh, sphCoords
 # end readFileData
 
 # format shapes data from input file
@@ -47,7 +49,7 @@ def createPolygonSurfaces(newPolygon, imgSize):
     zVal = calcCrossProduct(tmpVecOne, tmpVecTwo).getz() / imgSize
 
     # create rear face
-    surfaceVertices = calcSurfaceVertices(imgSize, numSides, zVal)
+    surfaceVertices = calcSurfaceVertices(imgSize, numSides, imgSize)
     newPolygon.addSurface(surface(surfaceVertices, numSides))
 
     # create intermediate surfaces
