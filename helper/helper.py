@@ -14,7 +14,7 @@ def readFileData(filename):
     filename = input_data[0].strip("\r\n")
     imgSize = int(input_data[1])
     numShapes, shapeArr = getShapeInfo(input_data[2].strip("\r\n"))
-    triMesh = input_data[3].strip("\r\n")
+    triMesh = int(input_data[3].strip("\r\n"))
     return filename, imgSize, numShapes, shapeArr, triMesh
 # end readFileData
 
@@ -82,19 +82,32 @@ def createInterSurfaces(newPolygon):
 
 # create triangle mesh
 def createTriangleMesh(polygon, imgSize, triMesh):
-    # calc center of polygon
-    center = vertex(int(imgSize/2), int(imgSize/2), 0)
+    numSurfaces = polygon.getNumSurfaces()
+    numSides = polygon.getNumSides()
+    startIndex = 0
+    
+    # simple tringle mesh for front/rear faces
+    if(numSides > 4):
+        createSimpleTriangleMesh(polygon.getSurface(0), imgSize)
+        createSimpleTriangleMesh(polygon.getSurface(1), imgSize)
+        startIndex = 2       
+# end createTriangleMesh
 
-    # triangle mesh for front/rear surfaces
-    if(polygon.getNumSides() > 4):
-        frontSurface = polygon.getSurface(0)
-        for i in range(frontSurface.getVerticesLen()-1):
-            vertices = [0] * 3
-            v = frontSurface.getVertex(i)
-            vv = frontSurface.getVertex(i+1)
-            vertices[0], vertices[1], vertices[2] = v, vv, center
-            ntriangle = triangle(vertices)
-            frontSurface.addTriangle(ntriangle)
+# create simple triangle mesh
+def createSimpleTriangleMesh(surface, imgSize):
+    # calc center
+    z = surface.getVertex(0).getz()
+    center = vertex(int(imgSize/2), int(imgSize/2), z)
+
+    # simple triangle mesh
+    for i in range(surface.getVerticesLen()-1):
+        vertices = [0] * 3
+        v = surface.getVertex(i)
+        vv = surface.getVertex(i+1)
+        vertices[0], vertices[1], vertices[2] = v, vv, center
+        ntriangle = triangle(vertices)
+        surface.addTriangle(ntriangle)
+# end createSimpleTriangleMesh
 
 # rasterize polygon
 def rasterize(Matrix, poly, imgSize):
@@ -116,7 +129,7 @@ def rasterize(Matrix, poly, imgSize):
             vvv = triangle.getVertex(2)
             BresenhamAlgo(v, vv, imgSize, Matrix)
             BresenhamAlgo(vv, vvv, imgSize, Matrix)
-            BresenhamAlgo(v, vvv, imgSize, Matrix)
+            BresenhamAlgo(vvv, v, imgSize, Matrix)
 # end rasterize
 
 # Bresenhams's Algo
@@ -156,7 +169,7 @@ def BresenhamAlgo(v, vv, imgSize, Matrix):
             y = y + yincr
             error = error + dx
     updateMatrix(Matrix, points, swapped)    
-# end rasterize
+# end BresenhamAlgo
 
 # update Matrix after rasterize()
 def updateMatrix(Matrix, points, swapped):
@@ -166,7 +179,7 @@ def updateMatrix(Matrix, points, swapped):
         Matrix[point[0]][point[1]] = 1
 # end updateMatrix
 
-# write Matrix to ppm file
+# write Matrix to pbm file
 def writePPM(Matrix, filename, imgSize):
     # create output file
     with open(filename, "w+") as fp:

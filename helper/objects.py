@@ -34,6 +34,8 @@ class surface:
         return self.vertices[index]
     def getTriangles(self):
         return self.triangles
+    def getNumTriangles(self):
+        return self.triIndex
     def addTriangle(self, triangle):
         self.triangles.append(triangle)
         self.triIndex = self.triIndex + 1

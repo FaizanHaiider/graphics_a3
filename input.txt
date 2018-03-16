@@ -1,4 +1,4 @@
-output/oct.pbm
+output/a2_test.pbm
 800
-8
+4
 100
