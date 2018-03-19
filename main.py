@@ -10,11 +10,9 @@ def main():
 
     # init variables
     Matrix = [[0 for x in range(imgSize)] for y in range(imgSize)]
-    basis = Basis(vertex(imgSize,0,0), vertex(0,imgSize,0), vertex(0,0,imgSize))
-    originCoord = int(imgSize/2)
-    origin = vertex(originCoord,originCoord,originCoord)
+    basis = Basis(vertex(imgSize/2,0,0), vertex(0,imgSize/2,0), vertex(0,0,imgSize/2))
+    origin = vertex(0,0,0)
     viewpoint = createViewPoint(sphCoords, origin, basis)
-    viewpoint.printViewPoint()
 
     # create shape(s)
     for i in range(numShapes):
@@ -25,13 +23,13 @@ def main():
         newPolygon = polygon(numSurfaces, surfaces)
 
         # create polygon surfaces
-        createPolygonSurfaces(newPolygon, imgSize)
+        newPolygon = createPolygonSurfaces(newPolygon, imgSize, origin)
 
         # create triangle mesh
         # createTriangleMesh(newPolygon, imgSize, triMesh)
 
         # update Matrix
-        rasterize(Matrix, newPolygon, imgSize)
+        rasterize(Matrix, newPolygon, imgSize, viewpoint, origin)
 
     # write to ppm file
     writePPM(Matrix, filename, imgSize)

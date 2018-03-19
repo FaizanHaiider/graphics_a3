@@ -39,6 +39,10 @@ class surface:
     def addTriangle(self, triangle):
         self.triangles.append(triangle)
         self.triIndex = self.triIndex + 1
+    def printSurface(self):
+        for vertex in self.vertices:
+            vertex.printVertex()
+
 
 # triangle class
 class triangle:
@@ -59,6 +63,7 @@ class vertex:
         self.x = x
         self.y = y
         self.z = z
+        self.f = 1.0
     
     def getx(self):
         return self.x
@@ -66,8 +71,19 @@ class vertex:
         return self.y
     def getz(self):
         return self.z
+    def setx(self, x):
+        self.x = 0
+        self.x = x
+    def sety(self, y):
+        self.y = 0
+        self.y = y
+    def setz(self, z):
+        self.z = 0
+        self.z = z
+    def getf(self):
+        return self.f
     def printVertex(self):
-        print '({}, {}, {})'.format(self.x, self.y, self.z)
+        print '({}, {}, {}, {})'.format(self.x, self.y, self.z, self.f)
 
 # basis class
 class Basis:
@@ -102,5 +118,5 @@ class viewPoint:
     def printViewPoint(self):
         self.c.printVertex()
         self.u.printVertex()
-        self.n.printVertex()
         self.v.printVertex()
+        self.n.printVertex()

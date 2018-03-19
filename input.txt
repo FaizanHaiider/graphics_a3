@@ -1,5 +1,5 @@
-output/a2_test.pbm
+output/a2_pent_70_50.pbm
 800
-4
+5
 100
-200,30,60
+100,70,50
