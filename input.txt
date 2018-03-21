@@ -1,5 +1,5 @@
-output/a2_pent_70_50.pbm
+output/cubep80_01.pbm
 800
-5
+4
 100
-100,70,50
+1,80,1

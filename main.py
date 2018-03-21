@@ -2,6 +2,7 @@
 
 from helper.helper import *
 from helper.objects import *
+from helper.auxFunctions import *
 from math import *
 
 def main():
@@ -23,7 +24,7 @@ def main():
         newPolygon = polygon(numSurfaces, surfaces)
 
         # create polygon surfaces
-        newPolygon = createPolygonSurfaces(newPolygon, imgSize, origin)
+        newPolygon = createPolygonSurfaces(newPolygon, imgSize/2, origin)
 
         # create triangle mesh
         # createTriangleMesh(newPolygon, imgSize, triMesh)
@@ -36,7 +37,7 @@ def main():
 
 # end main
 
-# 
+# start script
 if __name__ == "__main__":
     main()
 # end starting script
